@@ -1,0 +1,13 @@
+import pandas as pd
+import yfinance as yf  # For fetching historical stock data, you can use any similar library
+
+# Fetch historical stock data for Tesla (TSLA) for the last three months
+start_date = pd.Timestamp.now() - pd.DateOffset(months=3)
+end_date = pd.Timestamp.now()
+data = yf.download('TSLA', start=start_date, end=end_date)
+
+# Calculate the 5-day moving average of the closing price
+data['5_day_ma'] = data['Close'].rolling(window=5).mean()
+
+# Print the DataFrame with the closing price and 5-day moving average
+print(data[['Close', '5_day_ma']])
