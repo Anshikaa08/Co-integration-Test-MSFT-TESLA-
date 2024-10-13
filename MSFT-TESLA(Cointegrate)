@@ -1,6 +1,5 @@
 import pandas as pd
-import pandas_datareader.data as web
-import statsmodels.api as sm
+import yfinance as yf
 from statsmodels.tsa.stattools import coint
 from datetime import datetime
 
@@ -10,9 +9,9 @@ end_date = datetime.now()
 ticker1 = 'AAPL'
 ticker2 = 'MSFT'
 
-# Fetch historical stock prices
-stock1 = web.DataReader(ticker1, 'yahoo', start_date, end_date)
-stock2 = web.DataReader(ticker2, 'yahoo', start_date, end_date)
+# Fetch historical stock prices using yfinance
+stock1 = yf.download(ticker1, start=start_date, end=end_date)
+stock2 = yf.download(ticker2, start=start_date, end=end_date)
 
 # Use closing prices for the test
 close_prices1 = stock1['Close']
