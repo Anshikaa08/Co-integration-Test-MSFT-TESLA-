@@ -1,0 +1,31 @@
+import pandas as pd
+import pandas_datareader.data as web
+import statsmodels.api as sm
+from statsmodels.tsa.stattools import coint
+from datetime import datetime
+
+# Define the tickers and the time period
+start_date = datetime.now() - pd.DateOffset(years=5)
+end_date = datetime.now()
+ticker1 = 'AAPL'
+ticker2 = 'MSFT'
+
+# Fetch historical stock prices
+stock1 = web.DataReader(ticker1, 'yahoo', start_date, end_date)
+stock2 = web.DataReader(ticker2, 'yahoo', start_date, end_date)
+
+# Use closing prices for the test
+close_prices1 = stock1['Close']
+close_prices2 = stock2['Close']
+
+# Perform the Engle-Granger co-integration test
+score, p_value, _ = coint(close_prices1, close_prices2)
+
+print('Co-integration test score:', score)
+print('P-value:', p_value)
+
+# Interpret the p-value
+if p_value < 0.05:
+    print("The series are likely co-integrated (reject the null hypothesis of no co-integration at 5% significance level).")
+else:
+    print("The series are likely not co-integrated (fail to reject the null hypothesis of no co-integration).")
